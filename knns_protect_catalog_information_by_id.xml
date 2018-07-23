@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification
+	xmlns="https://github.com/vqmod/vqmod"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="https://github.com/vqmod/vqmod https://raw.githubusercontent.com/vqmod/vqmod/master/vqmod.xsd">
+	>
+	<id><![CDATA[[VQMOD] Protect Information Pages By ID]]></id>
+	<version>0.1.0</version>
+	<vqmver>2.6.3</vqmver>
+	<author>kanenas.net (aka Nikolas Branis) - nbran@kanenas.net</author>
+	<file path="catalog/controller/information/" name="information.php" error="log">
+		<operation error="skip">
+			<search position="before"><![CDATA[$information_info = $this->model_catalog_information->getInformation($information_id);]]></search>
+			<add><![CDATA[
+		// kanenas: knns_protect_catalog_information_by_id.xml (start) <<
+		if ($information_id == 8) { // The number 8 is the information_id of the page we want to protect
+			if (!$this->customer->isLogged()) {
+				$this->session->data['redirect'] = $this->url->link('information/information', 'information_id=' .  $information_id);
+				$this->response->redirect($this->url->link('account/login', '', 'SSL'));
+			}
+		}
+		// kanenas: knns_protect_catalog_information_by_id.xml (end) <<
+			]]></add>
+		</operation>
+	</file>
+</modification>
